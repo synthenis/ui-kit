@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Synthenis UI Kit</title>
+  <link rel="dns-prefetch" href="https://cdn.synthenis.com">
+  <style>
+    @font-face {
+      font-family: 'SYN';
+      src: url('https://cdn.synthenis.com/fonts/syn.woff2') format('woff2');
+      font-weight: 100 900;
+      font-display: swap;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent: #3e91ff;
+      --accent-hover: #5aa3ff;
+      --bg: #0a0a0a;
+      --surface: rgba(18,18,18,0.6);
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.15);
+      --text: #ffffff;
+      --text-muted: rgba(255,255,255,0.5);
+      --text-dim: rgba(255,255,255,0.25);
+      --ease: cubic-bezier(0.4,0,0.2,1);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'SYN', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: -30%; left: -10%;
+      width: 55%; height: 70%;
+      background: radial-gradient(ellipse, rgba(62,145,255,0.06) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -20%; right: -10%;
+      width: 45%; height: 55%;
+      background: radial-gradient(ellipse, rgba(0,114,222,0.05) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 60px; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      background: rgba(10,10,10,0.9);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-left { display: flex; align-items: center; gap: 12px; }
+    .nav-brand { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+    .nav-logo {
+      width: 26px; height: 26px;
+      background: var(--accent); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; color: #fff; user-select: none;
+    }
+    .nav-name { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+    .nav-name span { color: var(--text-muted); font-weight: 400; }
+    .nav-sep { width: 1px; height: 18px; background: var(--border-hover); }
+    .nav-kit { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .nav-version {
+      font-size: 11px; font-weight: 600; color: var(--accent);
+      background: rgba(62,145,255,0.12); border: 1px solid rgba(62,145,255,0.2);
+      border-radius: 40px; padding: 3px 10px; user-select: none;
+    }
+    .nav-gh {
+      display: flex; align-items: center; gap: 7px;
+      text-decoration: none; color: var(--text-muted);
+      font-size: 13px; font-weight: 500;
+      padding: 7px 14px; border-radius: 40px;
+      border: 1px solid var(--border);
+      transition: color 0.2s var(--ease), border-color 0.2s var(--ease), background 0.2s var(--ease);
+      user-select: none;
+    }
+    .nav-gh:hover { color: var(--text); border-color: var(--border-hover); background: rgba(255,255,255,0.04); }
+    main { position: relative; z-index: 1; padding-top: 60px; }
+    .hero {
+      max-width: 820px; margin: 0 auto;
+      padding: 96px 24px 80px; text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(62,145,255,0.1); border: 1px solid rgba(62,145,255,0.22);
+      border-radius: 40px; padding: 5px 15px;
+      font-size: 12px; font-weight: 600; color: var(--accent);
+      margin-bottom: 32px; user-select: none;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+      animation: blink 2.2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .hero h1 {
+      font-size: clamp(40px, 6.5vw, 70px);
+      font-weight: 700; line-height: 1.06;
+      letter-spacing: -0.038em; margin-bottom: 22px;
+    }
+    .hero h1 .g {
+      background: linear-gradient(130deg, #3e91ff 0%, #a4caff 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero p {
+      font-size: 17px; color: var(--text-muted);
+      line-height: 1.78; margin-bottom: 40px;
+      max-width: 580px; margin-left: auto; margin-right: auto;
+    }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 56px; }
+    .hero-stats {
+      display: flex; justify-content: center;
+      border: 1px solid var(--border); border-radius: 20px;
+      overflow: hidden; max-width: 480px; margin: 0 auto;
+      backdrop-filter: blur(20px); background: var(--surface);
+    }
+    .stat { flex: 1; padding: 20px; text-align: center; border-right: 1px solid var(--border); }
+    .stat:last-child { border-right: none; }
+    .stat-num { font-size: 22px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 4px; }
+    .stat-lbl { font-size: 11px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+    .section {
+      max-width: 1000px; margin: 0 auto;
+      padding: 72px 24px; border-top: 1px solid var(--border);
+    }
+    .section-header { margin-bottom: 40px; }
+    .section-tag { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 10px; }
+    .section-title { font-size: 28px; font-weight: 700; letter-spacing: -0.028em; margin-bottom: 10px; }
+    .section-desc { font-size: 15px; color: var(--text-muted); line-height: 1.7; max-width: 560px; }
+    .demo-card {
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 24px; overflow: hidden;
+      transition: border-color 0.2s var(--ease);
+    }
+    .demo-card:hover { border-color: var(--border-hover); }
+    .demo-preview {
+      padding: 48px 36px;
+      display: flex; align-items: center; justify-content: center;
+      flex-wrap: wrap; gap: 14px; min-height: 140px;
+      background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.012) 20px, rgba(255,255,255,0.012) 21px);
+    }
+    .demo-label { padding: 12px 22px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-dim); font-weight: 500; letter-spacing: 0.02em; }
+    .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 20px; }
+    .token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .token-item {
+      backdrop-filter: blur(20px); background: var(--surface);
+      border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+      transition: border-color 0.2s var(--ease);
+    }
+    .token-item:hover { border-color: var(--border-hover); }
+    .token-swatch { height: 52px; }
+    .token-info { padding: 12px 14px; }
+    .token-name { font-size: 12px; font-weight: 600; margin-bottom: 3px; }
+    .token-value { font-family: 'SF Mono','Fira Code',monospace; font-size: 11px; color: var(--text-muted); }
+    .btn-primary {
+      background: #fff; color: #000; border: none;
+      border-radius: 40px; padding: 11px 22px;
+      font-family: 'SYN', sans-serif; font-size: 14px; font-weight: 500;
+      cursor: pointer; user-select: none;
+      transition: opacity 0.15s var(--ease), transform 0.15s var(--ease);
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-primary:active { transform: scale(0.95); }
+    .btn-secondary {
+      background: transparent; color: var(--text);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 40px; padding: 11px 22px;
+      font-family: 'SYN', sans-serif; font-size: 14px; font-weight: 500;
+      cursor: pointer; user-select: none;
+      transition: background 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.15s var(--ease);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.24); }
+    .btn-secondary:active { transform: scale(0.95); }
+    .btn-accent {
+      background: var(--accent); color: #fff; border: none;
+      border-radius: 40px; padding: 11px 22px;
+      font-family: 'SYN', sans-serif; font-size: 14px; font-weight: 500;
+      cursor: pointer; user-select: none;
+      transition: background 0.2s var(--ease), transform 0.15s var(--ease);
+    }
+    .btn-accent:hover { background: var(--accent-hover); }
+    .btn-accent:active { transform: scale(0.95); }
+    .btn-danger {
+      background: transparent; color: #ff5f5f;
+      border: 1px solid rgba(255,95,95,0.22);
+      border-radius: 40px; padding: 11px 22px;
+      font-family: 'SYN', sans-serif; font-size: 14px; font-weight: 500;
+      cursor: pointer; user-select: none;
+      transition: background 0.2s var(--ease), transform 0.15s var(--ease);
+    }
+    .btn-danger:hover { background: rgba(255,95,95,0.08); }
+    .btn-danger:active { transform: scale(0.95); }
+    .btn-sm { padding: 7px 15px !important; font-size: 12px !important; }
+    .btn-lg { padding: 15px 30px !important; font-size: 15px !important; }
+    .btn-floating {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--accent); border: none;
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; user-select: none;
+      transition: background 0.2s var(--ease), transform 0.15s var(--ease);
+    }
+    .btn-floating:hover { background: var(--accent-hover); }
+    .btn-floating:active { transform: scale(0.95); }
+    .btn-floating svg { pointer-events: none; }
+    .input-wrap { position: relative; width: 100%; max-width: 320px; }
+    .input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 17px; height: 17px; pointer-events: none; opacity: 0.35; }
+    input[type="text"], input[type="email"], input[type="search"] {
+      width: 100%; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 12px 16px; font-family: 'SYN', sans-serif; font-size: 14px;
+      color: var(--text); outline: none;
+      transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
+    }
+    input[type="text"]:focus, input[type="email"]:focus, input[type="search"]:focus {
+      background: rgba(255,255,255,0.08); border-color: rgba(62,145,255,0.5);
+    }
+    input::placeholder { color: var(--text-dim); }
+    .has-icon input { padding-left: 44px; }
+    textarea {
+      width: 100%; max-width: 320px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 12px 16px; font-family: 'SYN', sans-serif; font-size: 14px;
+      color: var(--text); outline: none; resize: vertical; min-height: 90px;
+      transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
+    }
+    textarea:focus { background: rgba(255,255,255,0.08); border-color: rgba(62,145,255,0.5); }
+    textarea::placeholder { color: var(--text-dim); }
+    .card {
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 22px; width: 220px;
+      cursor: pointer; user-select: none;
+      transition: border-color 0.2s var(--ease), transform 0.15s var(--ease);
+    }
+    .card:hover { border-color: var(--border-hover); }
+    .card:active { transform: scale(0.98); }
+    .card-icon-wrap {
+      width: 38px; height: 38px; border-radius: 11px;
+      background: rgba(62,145,255,0.1); border: 1px solid rgba(62,145,255,0.18);
+      display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+    }
+    .card-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .card-meta { font-size: 11px; color: var(--text-dim); }
+    .card-badge { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 40px; background: rgba(62,145,255,0.12); border: 1px solid rgba(62,145,255,0.18); color: var(--accent); }
+    .toggle-row { display: flex; align-items: center; gap: 14px; }
+    .toggle-label { font-size: 14px; font-weight: 500; cursor: pointer; user-select: none; }
+    .toggle {
+      position: relative; width: 32px; height: 20px;
+      background: #676767; border-radius: 40px;
+      cursor: pointer; user-select: none; flex-shrink: 0;
+    }
+    .toggle.on { background: var(--accent); }
+    .toggle::after {
+      content: ''; position: absolute;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #fff; top: 2px; left: 2px;
+      transition: transform 0.22s var(--ease);
+    }
+    .toggle.on::after { transform: translateX(12px); }
+    .checkbox-row { display: flex; align-items: center; gap: 11px; cursor: pointer; user-select: none; }
+    .checkbox {
+      width: 21px; height: 21px; border-radius: 7px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      background: transparent; flex-shrink: 0; position: relative; cursor: pointer;
+    }
+    .checkbox.checked { background: var(--accent); border-color: var(--accent); }
+    .checkbox.checked::after {
+      content: ''; position: absolute;
+      left: 6px; top: 2.5px; width: 5px; height: 10px;
+      border: 2px solid #fff; border-top: none; border-left: none;
+      transform: rotate(45deg);
+    }
+    .checkbox-label { font-size: 14px; font-weight: 500; }
+    .progress-wrap { width: 100%; max-width: 340px; }
+    .progress-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+    .progress-title { font-size: 13px; font-weight: 500; }
+    .progress-pct { font-size: 13px; font-weight: 600; color: var(--accent); }
+    .progress-track { width: 100%; height: 6px; border-radius: 40px; background: rgba(255,255,255,0.07); overflow: hidden; position: relative; }
+    .progress-bar {
+      height: 100%; border-radius: 40px; background: var(--accent); position: relative;
+      transition: width 0.6s var(--ease);
+    }
+    .progress-bar::after {
+      content: ''; position: absolute; top: 0; left: -100%; right: 0; bottom: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+      animation: shimmer 2s infinite;
+    }
+    @keyframes shimmer { to { left: 200%; } }
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown-trigger {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      border-radius: 20px; padding: 11px 16px;
+      font-family: 'SYN', sans-serif; font-size: 14px; color: var(--text);
+      cursor: pointer; user-select: none; min-width: 180px;
+      transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
+    }
+    .dropdown-trigger:hover { background: rgba(255,255,255,0.08); border-color: var(--border-hover); }
+    .dropdown-trigger svg { margin-left: auto; transition: transform 0.22s var(--ease); pointer-events: none; }
+    .dropdown-trigger.open svg { transform: rotate(180deg); }
+    .dropdown-menu {
+      position: fixed; z-index: 500;
+      background: #0f0f0f; border: 1px solid var(--border);
+      border-radius: 24px; padding: 8px; min-width: 200px;
+      opacity: 0; transform: translateY(-8px) scale(0.97);
+      pointer-events: none;
+      transition: opacity 0.18s var(--ease), transform 0.18s var(--ease);
+    }
+    .dropdown-menu.open { opacity: 1; transform: none; pointer-events: all; }
+    .dropdown-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px; border-radius: 16px;
+      font-size: 14px; cursor: pointer; user-select: none;
+      transition: background 0.15s var(--ease);
+    }
+    .dropdown-item:hover { background: rgba(255,255,255,0.06); }
+    .dropdown-item.selected { color: var(--accent); font-weight: 500; }
+    .dropdown-check { width: 15px; height: 15px; opacity: 0; }
+    .dropdown-item.selected .dropdown-check { opacity: 1; }
+    #toast-container { position: fixed; top: 12px; right: 12px; z-index: 1000; display: flex; flex-direction: column; gap: 8px; }
+    .toast {
+      display: flex; align-items: center; gap: 12px;
+      background: #222; border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px; padding: 13px 18px;
+      font-size: 13px; font-weight: 500;
+      min-width: 260px; max-width: 340px;
+      cursor: pointer; user-select: none;
+      animation: toastIn 0.3s var(--ease) forwards;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .toast.out { animation: toastOut 0.25s var(--ease) forwards; }
+    @keyframes toastIn { from { opacity:0; transform:translateX(20px) scale(0.96); } to { opacity:1; transform:none; } }
+    @keyframes toastOut { to { opacity:0; transform:translateX(20px) scale(0.96); } }
+    .toast-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .toast-dot.info { background: var(--accent); }
+    .toast-dot.success { background: #34d399; }
+    .toast-dot.warning { background: #fbbf24; }
+    .toast-dot.error { background: #f87171; }
+    .toast-close { margin-left: auto; opacity: 0.4; font-size: 16px; line-height: 1; }
+    .type-demo { display: flex; flex-direction: column; gap: 20px; }
+    .type-row { display: flex; align-items: baseline; gap: 24px; }
+    .type-meta { font-size: 11px; color: var(--text-dim); font-family: 'SF Mono','Fira Code',monospace; width: 140px; flex-shrink: 0; }
+    .t-h1 { font-size: 40px; font-weight: 700; letter-spacing: -0.035em; }
+    .t-h2 { font-size: 30px; font-weight: 700; letter-spacing: -0.028em; }
+    .t-h3 { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+    .t-body { font-size: 15px; line-height: 1.7; }
+    .t-small { font-size: 13px; color: var(--text-muted); }
+    .t-caption { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; }
+    .install-box { backdrop-filter: blur(20px); background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
+    .install-tabs { display: flex; border-bottom: 1px solid var(--border); }
+    .install-tab {
+      padding: 12px 20px; font-size: 13px; font-weight: 500;
+      color: var(--text-muted); cursor: pointer; user-select: none;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: color 0.15s var(--ease), border-color 0.15s var(--ease);
+    }
+    .install-tab.active { color: var(--text); border-color: var(--accent); }
+    .install-body { padding: 20px 22px; }
+    .install-cmd { font-family: 'SF Mono','Fira Code',monospace; font-size: 13px; color: rgba(255,255,255,0.7); display: none; line-height: 1.8; }
+    .install-cmd.active { display: block; }
+    .install-cmd .prompt { color: var(--text-dim); }
+    .install-cmd .pkg { color: var(--accent); }
+    footer {
+      border-top: 1px solid var(--border); padding: 40px 24px;
+      max-width: 1000px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-brand { font-size: 13px; color: var(--text-muted); }
+    .footer-brand strong { color: var(--text); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 13px; color: var(--text-dim); text-decoration: none; transition: color 0.15s; }
+    .footer-links a:hover { color: var(--text-muted); }
+    @media(max-width:768px) {
+      .nav-kit { display: none; } .nav-sep { display: none; }
+      .hero { padding: 72px 20px 60px; } .section { padding: 56px 20px; }
+      .hero-stats { max-width: 100%; } .demo-preview { padding: 36px 20px; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+    @media(max-width:480px) {
+      .nav-gh span { display: none; } .stat-num { font-size: 18px; }
+      .demo-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <a class="nav-brand" href="https://synthenis.com" target="_blank">
+      <div class="nav-logo">S</div>
+      <span class="nav-name">Synthenis <span>/ UI Kit</span></span>
+    </a>
+    <div class="nav-sep"></div>
+    <span class="nav-kit">Design System</span>
+  </div>
+  <div class="nav-right">
+    <span class="nav-version">v1.0</span>
+    <a class="nav-gh" href="https://github.com/synthenis" target="_blank">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+      </svg>
+      <span>GitHub</span>
+    </a>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      Open Source — MIT License
+    </div>
+    <h1>Build with<br><span class="g">Synthenis UI</span></h1>
+    <p>A complete, production-ready design system for building dark-first interfaces. Every component is crafted for clarity, accessibility, and consistency — without configuration overhead.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="window.open('https://github.com/synthenis','_blank')">Get Started</button>
+      <button class="btn-secondary" onclick="document.getElementById('components').scrollIntoView({behavior:'smooth'})">Browse Components</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">12+</div>
+        <div class="stat-lbl">Components</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">Zero</div>
+        <div class="stat-lbl">Dependencies</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">MIT</div>
+        <div class="stat-lbl">License</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div class="section-tag">Foundation</div>
+      <div class="section-title">Design Tokens</div>
+      <div class="section-desc">Core visual variables that govern every component. Apply them via CSS custom properties for instant theming across your entire project.</div>
+    </div>
+    <div class="token-grid">
+      <div class="token-item">
+        <div class="token-swatch" style="background:#3e91ff"></div>
+        <div class="token-info"><div class="token-name">Accent (Dark)</div><div class="token-value">--accent: #3e91ff</div></div>
+      </div>
+      <div class="token-item">
+        <div class="token-swatch" style="background:#0072de"></div>
+        <div class="token-info"><div class="token-name">Accent (Light)</div><div class="token-value">--accent-light: #0072de</div></div>
+      </div>
+      <div class="token-item">
+        <div class="token-swatch" style="background:#0a0a0a;border-bottom:1px solid rgba(255,255,255,0.08)"></div>
+        <div class="token-info"><div class="token-name">Background</div><div class="token-value">--bg: #0a0a0a</div></div>
+      </div>
+      <div class="token-item">
+        <div class="token-swatch" style="background:rgba(18,18,18,0.6);border-bottom:1px solid rgba(255,255,255,0.08)"></div>
+        <div class="token-info"><div class="token-name">Surface</div><div class="token-value">rgba(18,18,18,0.6)</div></div>
+      </div>
+      <div class="token-item">
+        <div class="token-swatch" style="background:rgba(255,255,255,0.08)"></div>
+        <div class="token-info"><div class="token-name">Border</div><div class="token-value">rgba(255,255,255,0.08)</div></div>
+      </div>
+      <div class="token-item">
+        <div class="token-swatch" style="background:rgba(255,255,255,0.15)"></div>
+        <div class="token-info"><div class="token-name">Border Hover</div><div class="token-value">rgba(255,255,255,0.15)</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div class="section-tag">Foundation</div>
+      <div class="section-title">Typography</div>
+      <div class="section-desc">SYN is Synthenis's proprietary typeface, served from cdn.synthenis.com. The type scale is designed for high-density interfaces without sacrificing readability.</div>
+    </div>
+    <div class="demo-card">
+      <div class="demo-preview" style="flex-direction:column;align-items:flex-start;padding:40px;">
+        <div class="type-demo">
+          <div class="type-row"><div class="type-meta">700 / 40px / -3.5%</div><div class="t-h1">Display Heading</div></div>
+          <div class="type-row"><div class="type-meta">700 / 30px / -2.8%</div><div class="t-h2">Section Heading</div></div>
+          <div class="type-row"><div class="type-meta">600 / 22px / -2%</div><div class="t-h3">Subsection Title</div></div>
+          <div class="type-row"><div class="type-meta">400 / 15px / 1.7lh</div><div class="t-body">Body text for reading. Clear, comfortable, unobtrusive.</div></div>
+          <div class="type-row"><div class="type-meta">400 / 13px</div><div class="t-small">Small text and secondary labels</div></div>
+          <div class="type-row"><div class="type-meta">700 / 11px / caps</div><div class="t-caption">Caption / Overline Label</div></div>
+        </div>
+      </div>
+      <div class="demo-label">Font: SYN — cdn.synthenis.com/fonts/syn.woff2</div>
+    </div>
+  </section>
+
+  <section class="section" id="components">
+    <div class="section-header">
+      <div class="section-tag">Components</div>
+      <div class="section-title">Buttons</div>
+      <div class="section-desc">Four intent variants, three sizes, and a floating action button. All buttons enforce a minimum 42px tap target and apply scale(0.95) on press.</div>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-card">
+        <div class="demo-preview">
+          <button class="btn-primary btn-sm">Small</button>
+          <button class="btn-primary">Default</button>
+          <button class="btn-primary btn-lg">Large</button>
+        </div>
+        <div class="demo-label">Primary — bg #fff / text #000</div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-preview">
+          <button class="btn-secondary btn-sm">Small</button>
+          <button class="btn-secondary">Default</button>
+          <button class="btn-secondary btn-lg">Large</button>
+        </div>
+        <div class="demo-label">Secondary — transparent + border</div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-preview">
+          <button class="btn-accent">Confirm</button>
+          <button class="btn-danger">Delete</button>
+        </div>
+        <div class="demo-label">Accent & Danger intents</div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-preview">
+          <button class="btn-floating">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <button class="btn-floating" style="background:rgba(255,255,255,0.08);border:1px solid var(--border);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+        </div>
+        <div class="demo-label">Floating Action Button — 42×42px</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div class="section-tag">Components</div>
+      <div class="section-title">Inputs</div>
+      <div class="section-desc">Glass-style input fields with smooth focus transitions. Icon-prefixed variants use absolute positioning to keep the input element clean and accessible.</div>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-card">
+        <div class="demo-preview" style="flex-direction:column;gap:12px;">
+          <div class="input-wrap"><input type="text" placeholder="Default input"></div>
+          <div class="input-wrap"><input type="email" placeholder="email@synthenis.com"></div>
+        </div>
+        <div class="demo-label">Text & Email</div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-preview">
+          <div class="input-wrap has-icon">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="search" placeholder="Search…">
+          </div>
+        </div>
+        <div class="demo-label">Icon-prefixed Search</div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-preview">
+          <textarea placeholder="Write something…"></textarea>
+        </div>
+        <div class="demo-label">Textarea — resizable</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div class="section-tag">Components</div>
+      <div class="section-title">Cards</div>
+      <div class="section-desc">Glass surfaces with blur(20px) backdrop filter, subtle border treatment, and scale feedback on press. Suitable for content tiles, feature highlights, and navigation items.</div>
+    </div>
+    <div class="demo-card">
+      <div class="demo-preview" style="gap:16px;flex-wrap:wrap;">
+        <div class="card">
+          <div class="card-icon-wrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3e91ff" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="card-title">Monitoring</div>
+          <div class="card-desc">Real-time system metrics and uptime tracking across all services.</div>
+          <div class="card-footer"><span class="card-meta">Updated 2m ago</span><span class="card-badge">Live</span></div>
+        </div>
+        <div class="card">
+          <div class="card-icon-wrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3e91ff" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+          <div class="card-title">Deployments</div>
+          <div class="card-desc">Manage production and staging environments from one place.</div>
+          <div class="card-footer"><span class="card-meta">12 running</span><span class="card-badge">Stable</span></div>
+        </div>
+        <div class="card">
+          <div class="card-icon-wrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3e91ff" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div class="card-title">Security</div>
+          <div class="card-desc">WAF rules, access controls, and audit logs in one panel.</div>
+          <div class="card-footer"><span class="card-meta">0 alerts</span><span class="card-badge">Protected</span></div>
+        </div>
+      </div>
+      <div class="demo-label">Glass card with icon, body, footer, and badge</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div class="section-tag">Components</div>
+      <div class="section-title">Controls</div>
+      <div class="section-desc">Toggles, checkboxes, and dropdowns. State changes are immediate — no transition animation on discrete controls. Dropdowns are positioned via getBoundingClientRect for reliable rendering.</div>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-card">
+        <div class="demo-preview" style="flex-direction:column;gap:18px;align-items:flex-start;padding:40px;">
+          <div class="toggle-row">
+            <div class="toggle on" id="t1" onclick="this.classList.toggle('on')"></div>
+            <span class="toggle-label" onclick="document.getElementById('t1').classList.toggle('on')">Notifications enabled</span>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle" id="t2" onclick="this.classList.toggle('on')"></div>
+            <span class="toggle-label" onclick="document.getElementById('t2').classList.toggle('on')">Dark mode</span>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle on" id="t3" onclick="this.classList.toggle('on')"></div>
+            <span class="toggle-label" onclick="document.getElementById('t3').classList.toggle('on')">Auto-update</span>
+          </div>
+        </div>
+        <div class="demo-label">Toggle — 32×20px track, 16px thumb</div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-preview" style="flex-direction:column;gap:16px;align-items:flex-start;padding:40px;">
+          <div class="checkbox-row" onclick="toggleCheck('c1')">
+            <div class="checkbox checked" id="c1"></div>
+            <span class="checkbox-label">Enable analytics</span>
+          </div>
+          <div class="checkbox-row" onclick="toggleCheck('c2')">
+            <div class="checkbox" id="c2"></div>
+            <span class="checkbox-label">Send crash reports</span>
+          </div>
+          <div class="checkbox-row" onclick="toggleCheck('c3')">
+            <div class="checkbox checked" id="c3"></div>
+            <span class="checkbox-label">Accept terms of service</span>
+          </div>
+        </div>
+        <div class="demo-label">Checkbox — 21×21px, 7px radius</div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-preview">
+          <div class="dropdown">
+            <div class="dropdown-trigger" id="dd-trigger" onclick="toggleDropdown()">
+              <span id="dd-selected">Istanbul, TR</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="dropdown-menu" id="dd-menu">
+              <div class="dropdown-item selected" onclick="selectOption(this,'Istanbul, TR')">Istanbul, TR<svg class="dropdown-check" viewBox="0 0 24 24" fill="none" stroke="#3e91ff" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div class="dropdown-item" onclick="selectOption(this,'Ankara, TR')">Ankara, TR<svg class="dropdown-check" viewBox="0 0 24 24" fill="none" stroke="#3e91ff" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div class="dropdown-item" onclick="selectOption(this,'Berlin, DE')">Berlin, DE<svg class="dropdown-check" viewBox="0 0 24 24" fill="none" stroke="#3e91ff" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div class="dropdown-item" onclick="selectOption(this,'New York, US')">New York, US<svg class="dropdown-check" viewBox="0 0 24 24" fill="none" stroke="#3e91ff" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            </div>
+          </div>
+        </div>
+        <div class="demo-label">Dropdown — fixed position, outside-click closes</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div class="section-tag">Components</div>
+      <div class="section-title">Progress</div>
+      <div class="section-desc">Accent-filled progress bars with a shimmer animation to indicate active processing. Width transitions are eased for smooth visual feedback.</div>
+    </div>
+    <div class="demo-card">
+      <div class="demo-preview" style="flex-direction:column;gap:22px;align-items:center;width:100%;">
+        <div class="progress-wrap">
+          <div class="progress-header"><span class="progress-title">Upload Progress</span><span class="progress-pct">72%</span></div>
+          <div class="progress-track"><div class="progress-bar" style="width:72%"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-header"><span class="progress-title">Model Initialization</span><span class="progress-pct">38%</span></div>
+          <div class="progress-track"><div class="progress-bar" style="width:38%"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-header"><span class="progress-title">Sync Complete</span><span class="progress-pct">100%</span></div>
+          <div class="progress-track"><div class="progress-bar" style="width:100%;background:#34d399;"></div></div>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:8px;">
+          <button class="btn-accent btn-sm" onclick="animateProgress()">Animate</button>
+          <button class="btn-secondary btn-sm" onclick="resetProgress()">Reset</button>
+        </div>
+      </div>
+      <div class="demo-label">Progress bar — accent fill + shimmer + eased transition</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div class="section-tag">Components</div>
+      <div class="section-title">Toasts</div>
+      <div class="section-desc">Non-blocking notifications that appear top-right, auto-dismiss after 10 seconds, and deduplicate by type and message. Click to dismiss early.</div>
+    </div>
+    <div class="demo-card">
+      <div class="demo-preview" style="gap:12px;flex-wrap:wrap;">
+        <button class="btn-secondary" onclick="showToast('info','Deployment started successfully.')">Info</button>
+        <button class="btn-secondary" onclick="showToast('success','Changes saved and published.')">Success</button>
+        <button class="btn-secondary" onclick="showToast('warning','API rate limit approaching threshold.')">Warning</button>
+        <button class="btn-secondary" onclick="showToast('error','Connection to database lost.')">Error</button>
+      </div>
+      <div class="demo-label">Toast notifications — click to trigger</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div class="section-tag">Getting Started</div>
+      <div class="section-title">Installation</div>
+      <div class="section-desc">Synthenis UI Kit requires no build tools or dependencies. Add the stylesheet via CDN or clone the repository directly — then start building.</div>
+    </div>
+    <div class="install-box">
+      <div class="install-tabs">
+        <div class="install-tab active" onclick="switchTab('cdn',this)">CDN</div>
+        <div class="install-tab" onclick="switchTab('clone',this)">git clone</div>
+      </div>
+      <div class="install-body">
+        <div class="install-cmd active" id="tab-cdn"><span class="prompt">&lt;!-- Add to &lt;head&gt; --&gt;</span>
+<span style="color:rgba(255,255,255,0.55)">&lt;link rel="stylesheet" href="https://cdn.synthenis.com/ui-kit/v1/synthenis-ui.min.css"&gt;</span>
+
+<span class="prompt">&lt;!-- Optional: preconnect for faster font load --&gt;</span>
+<span style="color:rgba(255,255,255,0.55)">&lt;link rel="preconnect" href="https://cdn.synthenis.com"&gt;</span></div>
+        <div class="install-cmd" id="tab-clone"><span class="prompt">$</span> git clone https://github.com/synthenis/ui-kit.git
+<span class="prompt">$</span> cd ui-kit
+<span class="prompt">$</span> open index.html</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-brand">
+    <strong>Synthenis</strong> UI Kit — Open Source, MIT License.<br>
+    Built and maintained by <strong>Synthenis</strong>, Istanbul, Turkey.
+  </div>
+  <div class="footer-links">
+    <a href="https://synthenis.com" target="_blank">synthenis.com</a>
+    <a href="https://github.com/synthenis" target="_blank">GitHub</a>
+    <a href="https://help.synthenis.com" target="_blank">Docs</a>
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+
+<script>
+  function toggleCheck(id) {
+    document.getElementById(id).classList.toggle('checked');
+  }
+
+  let ddOpen = false;
+  function toggleDropdown() {
+    const trigger = document.getElementById('dd-trigger');
+    const menu = document.getElementById('dd-menu');
+    ddOpen = !ddOpen;
+    if (ddOpen) {
+      const rect = trigger.getBoundingClientRect();
+      menu.style.top = (rect.bottom + 8) + 'px';
+      menu.style.left = rect.left + 'px';
+      menu.style.minWidth = rect.width + 'px';
+    }
+    trigger.classList.toggle('open', ddOpen);
+    menu.classList.toggle('open', ddOpen);
+  }
+  function selectOption(el, val) {
+    document.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('dd-selected').textContent = val;
+    toggleDropdown();
+  }
+  document.addEventListener('click', function(e) {
+    if (ddOpen && !e.target.closest('.dropdown')) {
+      ddOpen = false;
+      document.getElementById('dd-trigger').classList.remove('open');
+      document.getElementById('dd-menu').classList.remove('open');
+    }
+  });
+
+  const bars = document.querySelectorAll('.progress-bar');
+  const pcts = document.querySelectorAll('.progress-pct');
+  const origWidths = ['72%','38%','100%'];
+  const origPcts = ['72%','38%','100%'];
+  function animateProgress() {
+    const targets = [Math.floor(Math.random()*80+15), Math.floor(Math.random()*80+15), 100];
+    bars.forEach((b,i) => { b.style.width = targets[i]+'%'; pcts[i].textContent = targets[i]+'%'; });
+  }
+  function resetProgress() {
+    origWidths.forEach((w,i) => { bars[i].style.width = w; pcts[i].textContent = origPcts[i]; });
+  }
+
+  const activeToasts = new Set();
+  function showToast(type, msg) {
+    const key = type+'|'+msg;
+    if (activeToasts.has(key)) return;
+    activeToasts.add(key);
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = `<div class="toast-dot ${type}"></div><span>${msg}</span><div class="toast-close">×</div>`;
+    document.getElementById('toast-container').appendChild(t);
+    const dismiss = () => {
+      t.classList.add('out');
+      setTimeout(() => { t.remove(); activeToasts.delete(key); }, 260);
+    };
+    t.addEventListener('click', dismiss);
+    let timer = setTimeout(dismiss, 10000);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) clearTimeout(timer);
+      else timer = setTimeout(dismiss, 10000);
+    });
+  }
+
+  function switchTab(id, el) {
+    document.querySelectorAll('.install-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.install-cmd').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('tab-'+id).classList.add('active');
+  }
+</script>
+</body>
+</html>
