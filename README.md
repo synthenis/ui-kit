@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://github.com/synthenis/ui-kit/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square&color=3e91ff" alt="MIT License"></a>
   <a href="https://github.com/synthenis/ui-kit/releases"><img src="https://img.shields.io/badge/version-1.0.0-blue?style=flat-square&color=3e91ff" alt="Version"></a>
-  <a href="https://synthenis.github.io/ui-kit"><img src="https://img.shields.io/badge/demo-live-blue?style=flat-square&color=3e91ff" alt="Live Demo"></a>
+  <a href="https://cdn.synthenis.com/public/design_kit.html"><img src="https://img.shields.io/badge/demo-live-blue?style=flat-square&color=3e91ff" alt="Live Demo"></a>
   <img src="https://img.shields.io/badge/dependencies-zero-blue?style=flat-square&color=3e91ff" alt="Zero Dependencies">
 </p>
 
@@ -43,25 +43,53 @@ Every component is designed for real use — not generic placeholders. The syste
 
 ### CDN
 
-%%CODE-BLOCK-0%%
+    <!-- Add to <head> -->
+    <link rel="preconnect" href="https://cdn.synthenis.com">
+    <link rel="stylesheet" href="https://cdn.synthenis.com/ui-kit/v1/synthenis-ui.min.css">
 
 ### Clone
 
-%%CODE-BLOCK-1%%
+    git clone https://github.com/synthenis/ui-kit.git
+    cd ui-kit
+    open index.html
 
 ## Usage
 
-%%CODE-BLOCK-2%%
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="preconnect" href="https://cdn.synthenis.com">
+      <link rel="stylesheet" href="https://cdn.synthenis.com/ui-kit/v1/synthenis-ui.min.css">
+    </head>
+    <body>
+      <button class="btn-primary">Get Started</button>
+      <button class="btn-secondary">Learn More</button>
+      <button class="btn-accent">Confirm</button>
+    </body>
+    </html>
 
 ## Design Tokens
 
-%%CODE-BLOCK-3%%
+    :root {
+      --accent:       #3e91ff;
+      --accent-light: #0072de;
+      --bg:           #0a0a0a;
+      --surface:      rgba(18,18,18,0.6);
+      --border:       rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.15);
+      --text:         #ffffff;
+      --text-muted:   rgba(255,255,255,0.5);
+      --text-dim:     rgba(255,255,255,0.25);
+      --ease:         cubic-bezier(0.4,0,0.2,1);
+    }
 
 ## Typography
 
 The SYN typeface is served from Synthenis CDN and loaded automatically when you include the stylesheet.
 
-%%CODE-BLOCK-4%%
+    Font stack: 'SYN', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif
 
 | Style | Weight | Size | Tracking |
 |-------|--------|------|----------|
@@ -74,7 +102,7 @@ The SYN typeface is served from Synthenis CDN and loaded automatically when you 
 
 ## Live Demo
 
-[synthenis.github.io/ui-kit](https://synthenis.github.io/ui-kit)
+[cdn.synthenis.com/public/design_kit.html](https://cdn.synthenis.com/public/design_kit.html)
 
 ## License
 
