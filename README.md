@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://cdn.synthenis.com/img/synthenisBanner0.png" alt="Synthenis UI Kit" width="100%">
+  <img src="https://cdn.synthenis.com/img/pasaProducts/synthenisBanner0.png" alt="Synthenis UI Kit" width="100%">
 </p>
 
 <p align="center">
